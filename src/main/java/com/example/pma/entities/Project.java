@@ -7,7 +7,9 @@ import java.util.List;
 
 @Entity
 public class Project {
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "employee_seq")
+    @SequenceGenerator(name = "employee_seq", sequenceName = "employee_seq",
+            allocationSize = 1,initialValue=1)
     @Id
     private Long projectId;
     private String name;
@@ -15,9 +17,6 @@ public class Project {
     private String description;
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST},
             fetch = FetchType.LAZY)
-    @JoinTable(name = "project_employee",
-                joinColumns = @JoinColumn(name = "project_id"),
-                inverseJoinColumns = @JoinColumn(name = "employee_id"))
     private List<Employee> employees;
 
     public Project() {
